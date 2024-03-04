@@ -26,6 +26,9 @@ export const TodoList: React.FC<TodoListPropsType> = (
 
     const [taskTitle, setTaskTitle] = useState("")
     const [error, setError] = useState(false)
+    const [isHide, setIsHide] = useState(false)
+
+    const toggleTodoList = () => setIsHide(!isHide)
 
     const addNewTaskTitleHandler = () => {
         const trimmedTaskTitle = taskTitle.trim()
@@ -53,7 +56,9 @@ export const TodoList: React.FC<TodoListPropsType> = (
         <ul>
             {tasks.map(t => {
                 const removeTaskHandler = () => removeTask(t.id)
-                const changeTaskStatusHandler = (e:ChangeEvent<HTMLInputElement>) => {changeTaskStatus(t.id, e.currentTarget.checked)}
+                const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                    changeTaskStatus(t.id, e.currentTarget.checked)
+                }
 
                 return <li key={t.id}>
                     <input type="checkbox" checked={t.isDone} onChange={changeTaskStatusHandler}/>
@@ -66,19 +71,32 @@ export const TodoList: React.FC<TodoListPropsType> = (
 
     return (
         <div className="todolist"> {/*React.createElement()*/}
-            <h3>{title}</h3>
-            <div>
-                <input value={taskTitle} onChange={setTaskTitleHandler} onKeyDown={addTaskOnKeyDownHandler} className={error ? 'task-input-error' : ''}/>
-                <Button btnTitle="+" isDisabled={!taskTitle} onClickHandler={addNewTaskTitleHandler}/>
-                {taskTitle.length > 15 && <div style={{color: 'red'}}> Не больше 15 символов</div>}
-                {error && <div style={{color: 'red'}}>Введите название таски</div>}
-            </div>
-            {tasksItems}
-            <div className={'btns-filter-block'}>
-                <Button classes={filter === 'all' ? 'btn-filter-active' : ''} btnTitle="All" onClickHandler={changeFilterHandlerCreator('all')}/>
-                <Button classes={filter === 'active' ? 'btn-filter-active' : ''} btnTitle="Active" onClickHandler={changeFilterHandlerCreator('active')}/>
-                <Button classes={filter === 'completed' ? 'btn-filter-active' : ''} btnTitle="Completed" onClickHandler={changeFilterHandlerCreator('completed')}/>
-            </div>
+            <h3>{title}
+                <Button btnTitle={isHide ? 'Show' : 'Hide'} onClickHandler={toggleTodoList}/>
+            </h3>
+            {!isHide
+                ? <>
+                    <div>
+                        <input value={taskTitle} onChange={setTaskTitleHandler} onKeyDown={addTaskOnKeyDownHandler}
+                               className={error ? 'task-input-error' : ''}/>
+                        <Button btnTitle="+" isDisabled={!taskTitle} onClickHandler={addNewTaskTitleHandler}/>
+                        {taskTitle.length > 15 && <div style={{color: 'red'}}> Не больше 15 символов</div>}
+                        {error && <div style={{color: 'red'}}>Введите название таски</div>}
+                    </div>
+                    {tasksItems}
+                    <div className={'btns-filter-block'}>
+                        <Button classes={filter === 'all' ? 'btn-filter-active' : ''} btnTitle="All"
+                                onClickHandler={changeFilterHandlerCreator('all')}/>
+                        <Button classes={filter === 'active' ? 'btn-filter-active' : ''} btnTitle="Active"
+                                onClickHandler={changeFilterHandlerCreator('active')}/>
+                        <Button classes={filter === 'completed' ? 'btn-filter-active' : ''} btnTitle="Completed"
+                                onClickHandler={changeFilterHandlerCreator('completed')}/>
+                    </div>
+                </>
+                :
+                <div>{`В тудулисте всего ${tasks.length} задач`}</div>
+            }
         </div>
-    );
+    )
+    ;
 };
