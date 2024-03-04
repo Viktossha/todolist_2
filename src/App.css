@@ -34,3 +34,8 @@
   display: flex;
   gap: 6px;
 }
+
+.task-input-error {
+  border: 2px solid red;
+  outline: none;
+}

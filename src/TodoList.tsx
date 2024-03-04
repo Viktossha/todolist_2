@@ -25,13 +25,22 @@ export const TodoList: React.FC<TodoListPropsType> = (
     //const {title} = props деструктр.присваивание
 
     const [taskTitle, setTaskTitle] = useState("")
+    const [error, setError] = useState(false)
 
     const addNewTaskTitleHandler = () => {
-        addTask(taskTitle)
+        const trimmedTaskTitle = taskTitle.trim()
+        if (trimmedTaskTitle) {
+            addTask(trimmedTaskTitle)
+        } else {
+            setError(true)
+        }
         setTaskTitle("")
     }
 
-    const setTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => setTaskTitle(e.currentTarget.value)
+    const setTaskTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        error && setError(false)
+        setTaskTitle(e.currentTarget.value)
+    }
 
     const addTaskOnKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && addNewTaskTitleHandler()
 
@@ -59,9 +68,10 @@ export const TodoList: React.FC<TodoListPropsType> = (
         <div className="todolist"> {/*React.createElement()*/}
             <h3>{title}</h3>
             <div>
-                <input value={taskTitle} onChange={setTaskTitleHandler} onKeyDown={addTaskOnKeyDownHandler}/>
+                <input value={taskTitle} onChange={setTaskTitleHandler} onKeyDown={addTaskOnKeyDownHandler} className={error ? 'task-input-error' : ''}/>
                 <Button btnTitle="+" isDisabled={!taskTitle} onClickHandler={addNewTaskTitleHandler}/>
                 {taskTitle.length > 15 && <div style={{color: 'red'}}> Не больше 15 символов</div>}
+                {error && <div style={{color: 'red'}}>Введите название таски</div>}
             </div>
             {tasksItems}
             <div className={'btns-filter-block'}>
