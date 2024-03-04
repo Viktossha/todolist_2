@@ -58,10 +58,11 @@ function App() {
     }
 
     const tasksForTodoList: Array<TaskType> = getFilteredTasks(tasks, filter)
+    const tasksForHideMode: Array<TaskType> = getFilteredTasks(tasks, "active")
 
     return (
         <div className="App">
-            <TodoList title="What to learn" tasks={tasksForTodoList} removeTask={removeTask} changeTodoListFilter={changeTodoListFilter} addTask={addTask} changeTaskStatus={changeTaskStatus} filter={filter}/>
+            <TodoList title="What to learn" tasks={tasksForTodoList} tasksForHideMode={tasksForHideMode} removeTask={removeTask} changeTodoListFilter={changeTodoListFilter} addTask={addTask} changeTaskStatus={changeTaskStatus} filter={filter}/>
         </div>
     );
 }

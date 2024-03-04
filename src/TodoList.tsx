@@ -10,6 +10,7 @@ type TodoListPropsType = {
     addTask: (taskTitle: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean) => void
     filter: FilterValuesType
+    tasksForHideMode: Array<TaskType>
 }
 export const TodoList: React.FC<TodoListPropsType> = (
     {
@@ -19,7 +20,8 @@ export const TodoList: React.FC<TodoListPropsType> = (
         changeTodoListFilter,
         addTask,
         changeTaskStatus,
-        filter
+        filter,
+        tasksForHideMode
     }) => {
     //const title = props.title
     //const {title} = props деструктр.присваивание
@@ -94,7 +96,7 @@ export const TodoList: React.FC<TodoListPropsType> = (
                     </div>
                 </>
                 :
-                <div>{`В тудулисте всего ${tasks.length} задач`}</div>
+                <div>{`В тудулисте ${tasksForHideMode.length} невыполненных задач`}</div>
             }
         </div>
     )
