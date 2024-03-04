@@ -9,6 +9,7 @@ type TodoListPropsType = {
     changeTodoListFilter: (filter: FilterValuesType) => void
     addTask: (taskTitle: string) => void
     changeTaskStatus: (taskId: string, isDone: boolean) => void
+    filter: FilterValuesType
 }
 export const TodoList: React.FC<TodoListPropsType> = (
     {
@@ -17,7 +18,8 @@ export const TodoList: React.FC<TodoListPropsType> = (
         removeTask,
         changeTodoListFilter,
         addTask,
-        changeTaskStatus
+        changeTaskStatus,
+        filter
     }) => {
     //const title = props.title
     //const {title} = props деструктр.присваивание
@@ -46,7 +48,7 @@ export const TodoList: React.FC<TodoListPropsType> = (
 
                 return <li key={t.id}>
                     <input type="checkbox" checked={t.isDone} onChange={changeTaskStatusHandler}/>
-                    <span>{t.taskTitle}</span>
+                    <span className={t.isDone ? 'task-done' : 'task'}>{t.taskTitle}</span>
                     <Button btnTitle="x" onClickHandler={removeTaskHandler}/>
                 </li>
             })}
@@ -62,10 +64,10 @@ export const TodoList: React.FC<TodoListPropsType> = (
                 {taskTitle.length > 15 && <div style={{color: 'red'}}> Не больше 15 символов</div>}
             </div>
             {tasksItems}
-            <div>
-                <Button btnTitle="All" onClickHandler={changeFilterHandlerCreator('all')}/>
-                <Button btnTitle="Active" onClickHandler={changeFilterHandlerCreator('active')}/>
-                <Button btnTitle="Completed" onClickHandler={changeFilterHandlerCreator('completed')}/>
+            <div className={'btns-filter-block'}>
+                <Button classes={filter === 'all' ? 'btn-filter-active' : ''} btnTitle="All" onClickHandler={changeFilterHandlerCreator('all')}/>
+                <Button classes={filter === 'active' ? 'btn-filter-active' : ''} btnTitle="Active" onClickHandler={changeFilterHandlerCreator('active')}/>
+                <Button classes={filter === 'completed' ? 'btn-filter-active' : ''} btnTitle="Completed" onClickHandler={changeFilterHandlerCreator('completed')}/>
             </div>
         </div>
     );
